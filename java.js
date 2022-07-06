@@ -82,16 +82,28 @@ function getColorHex(x, y) {
     return color
 }
 
+function hexColorStringToRGB(hexColor) {
+    const checkChar = [...hexColor]
+    if(checkChar[0] == "#" && hexColor.length == 7){
+        const red = checkChar[1] + checkChar[2]
+        const green = checkChar[3] + checkChar[4]
+        const blue = checkChar[5] + checkChar[6]
+        return [parseInt(red, 16), parseInt(green, 16), parseInt(blue, 16)]
+    }
+    else {
+        console.log("valor Inválido")
+    }
+}
 
-function bucketFill(x, y, oldColor) {
+function bucketFill(x, y, oldColor, RGB) {
     if(getColorHex(x, y) == oldColor) {
-        const newColorData = new ImageData(new Uint8ClampedArray([0, 0, 0, 255]), 1, 1)
+        const newColorData = new ImageData(new Uint8ClampedArray([RGB[0], RGB[1], RGB[2], 255]), 1, 1)
         render.putImageData(newColorData, x, y)
-        setTimeout(() =>{
-            bucketFill(x - 1, y, oldColor)
-            bucketFill(x + 1, y, oldColor)
-            bucketFill(x, y - 1, oldColor)
-            bucketFill(x, y + 1, oldColor)
+        setTimeout(() => {
+            bucketFill(x - 1, y, oldColor, RGB)
+            bucketFill(x + 1, y, oldColor, RGB)
+            bucketFill(x, y - 1, oldColor, RGB)
+            bucketFill(x, y + 1, oldColor, RGB)
         }, 0)
     }
     return
@@ -102,7 +114,7 @@ canvas.addEventListener("click", evento => {
         updateMousePosition(evento, -8, -26)
         const posX = mouseInfo.posX
         const posY = mouseInfo.posY
-        bucketFill(posX, posY, getColorHex(posX, posY))
+        bucketFill(posX, posY, getColorHex(posX, posY), hexColorStringToRGB(toolInfo.color))
     }
     else if(toolInfo.tool == "colorPicker") {
         updateMousePosition(evento)
