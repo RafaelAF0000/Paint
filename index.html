@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div>
+            <button id = "downloadButton" class = "button">Baixar</button>
+            <a id = "doDownload"></a>
+        </div>
+        <button class = "button" id = "limparButton">Limpar</button>
+        <div>
+            <label for="tamanho" id = "labelTamanho">Tamanho 4</label>
+            <input type="range" id="tamanho" min="1" max="100" value = "4">
+        </div>
+        <div>
+            <input type="color" id="inputColor">
+            <label for="inputColor">Cor</label>
+        </div>
+        <div>
+            <label for="selectTool">Ferramenta:</label>
+            <select id="selectTool">
+                <option value="pencil">Pincel</option>
+                <option value="bucket">Lata de Tinta</option>
+                <option value="colorPicker">Conta Gotas</option>
+            </select>
+        </div>
+    </header>
+    <div class = "documento">
+        <canvas id = "quadro" width = "600" height = "500"></canvas>
+    </div>
+
+
+
+    <script src = "/draw.js"></script>
+    <script src = "/java.js"></script>
+</body>
+</html>
