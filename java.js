@@ -76,35 +76,38 @@ selectTool.addEventListener("input", evento => {
 
 //
 
-function getColor(x, y) {
+function getColorHex(x, y) {
     const imageColor = render.getImageData(x, y, 1, 1)
     const color = RGBtoHex(imageColor.data[0], imageColor.data[1], imageColor.data[2])
     return color
 }
 
+
 function bucketFill(x, y, oldColor) {
-    if(getColor(x, y) == oldColor) {
-        render.fillRect(x, y, 1, 1)
-        
-        bucketFill(x - 1, y, oldColor)
-        bucketFill(x + 1, y, oldColor)
-        bucketFill(x, y - 1, oldColor)
-        bucketFill(x, y + 1, oldColor)
+    if(getColorHex(x, y) == oldColor) {
+        const newColorData = new ImageData(new Uint8ClampedArray([0, 0, 0, 255]), 1, 1)
+        render.putImageData(newColorData, x, y)
+        setTimeout(() =>{
+            bucketFill(x - 1, y, oldColor)
+            bucketFill(x + 1, y, oldColor)
+            bucketFill(x, y - 1, oldColor)
+            bucketFill(x, y + 1, oldColor)
+        }, 0)
     }
+    return
 }
 
 canvas.addEventListener("click", evento => {
     if(toolInfo.tool == "bucket") {
-        updateMousePosition(evento)
+        updateMousePosition(evento, -8, -26)
         const posX = mouseInfo.posX
         const posY = mouseInfo.posY
-        render.fillStyle = toolInfo.color
-        bucketFill(posX, posY, getColor(posX, posY))
+        bucketFill(posX, posY, getColorHex(posX, posY))
     }
     else if(toolInfo.tool == "colorPicker") {
         updateMousePosition(evento)
         const inputColor = document.getElementById("inputColor")
-        inputColor.value = getColor(mouseInfo.posX, mouseInfo.posY)
-        toolInfo.color = getColor(mouseInfo.posX, mouseInfo.posY)
+        inputColor.value = getColorHex(mouseInfo.posX, mouseInfo.posY)
+        toolInfo.color = getColorHex(mouseInfo.posX, mouseInfo.posY)
     }
 })
