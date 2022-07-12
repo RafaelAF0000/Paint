@@ -96,17 +96,26 @@ function hexColorStringToRGB(hexColor) {
 }
 
 function bucketFill(x, y, oldColor, RGB) {
-    if(getColorHex(x, y) == oldColor) {
-        const newColorData = new ImageData(new Uint8ClampedArray([RGB[0], RGB[1], RGB[2], 255]), 1, 1)
-        render.putImageData(newColorData, x, y)
-        setTimeout(() => {
-            bucketFill(x - 1, y, oldColor, RGB)
-            bucketFill(x + 1, y, oldColor, RGB)
-            bucketFill(x, y - 1, oldColor, RGB)
-            bucketFill(x, y + 1, oldColor, RGB)
-        }, 0)
+    const pixelsCheckList = [x, y]; 
+    const newColorData = new ImageData(new Uint8ClampedArray([
+        RGB[0], RGB[1], RGB[2], 255,
+        RGB[0], RGB[1], RGB[2], 255,
+        RGB[0], RGB[1], RGB[2], 255,
+        RGB[0], RGB[1], RGB[2], 255,
+    ]), 2, 2) //Dados de um Pixel 2x2, um pixel 1x1 completa melhor, mas é mais lento
+
+    while(pixelsCheckList.length > 0) {
+        const pixelY = pixelsCheckList.pop();
+        const pixelX = pixelsCheckList.pop();
+        if(getColorHex(pixelX, pixelY) == oldColor) {
+            render.putImageData(newColorData, pixelX, pixelY)
+
+            pixelsCheckList.push(pixelX + 2, pixelY);
+            pixelsCheckList.push(pixelX - 2, pixelY);
+            pixelsCheckList.push(pixelX, pixelY + 2);
+            pixelsCheckList.push(pixelX, pixelY - 2);
+        }
     }
-    return
 }
 
 canvas.addEventListener("click", evento => {
@@ -114,7 +123,11 @@ canvas.addEventListener("click", evento => {
         updateMousePosition(evento, -8, -26)
         const posX = mouseInfo.posX
         const posY = mouseInfo.posY
-        bucketFill(posX, posY, getColorHex(posX, posY), hexColorStringToRGB(toolInfo.color))
+        if(getColorHex(posX, posY) != toolInfo.color) {
+            bucketFill(posX, posY, getColorHex(posX, posY), hexColorStringToRGB(toolInfo.color))
+            saveNewState()
+            recoverStates = []
+        }
     }
     else if(toolInfo.tool == "colorPicker") {
         updateMousePosition(evento)
