@@ -116,7 +116,6 @@ function bucketFill(x, y, oldColor, RGB) {
             pixelsCheckList.push(pixelX, pixelY - 2);
         }
     }
-    
 }
 
 canvas.addEventListener("click", evento => {
