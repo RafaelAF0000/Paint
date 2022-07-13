@@ -1,13 +1,13 @@
 function updateCursor(){
     switch(toolInfo.tool) {
     case "pencil":
-        canvas.style.cursor = "url('/cursor.png'), auto"
+        canvas.style.cursor = "url('img/cursor.png'), auto"
     break
     case "bucket":
-        canvas.style.cursor = "url('/balde.png'), auto"
+        canvas.style.cursor = "url('img/balde.png'), auto"
     break
     case "colorPicker":
-        canvas.style.cursor = "url('/contaGotas.png'), auto"
+        canvas.style.cursor = "url('img/contaGotas.png'), auto"
     break
     }
 }

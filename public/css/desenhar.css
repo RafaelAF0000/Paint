@@ -41,12 +41,12 @@ label {
 }
 
 button#botaoReverter {
-    background-image: url("/seta_inversa.png");
+    background-image: url("/img/seta_inversa.png");
     margin-left: 10px;
 }
 
 button#botaoRetornar {
-    background-image: url("/seta.png");
+    background-image: url("/img/seta.png");
     margin-right: 10px;
 }
 
